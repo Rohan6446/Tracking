@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruitment Progress Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .summary {
+            background-color: #f2f2f2;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .add-entry {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Recruitment Progress Tracker</h1>
+
+    <div class="summary">
+        <p><strong>Total Submissions for the Week:</strong> <input type="number" id="totalSubmissions" placeholder="Enter total submissions"></p>
+        <p><strong>Total Roles Covered This Week:</strong> <input type="number" id="totalRoles" placeholder="Enter total roles"></p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Job ID</th>
+                <th>Candidates Submitted</th>
+                <th>Candidates Rejected</th>
+                <th>Rejection Reason</th>
+                <th>New Role (if any)</th>
+                <th>Worked on New Role?</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="recruitmentTable">
+            <!-- Rows will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <button onclick="addEntry('Monday')">Add Entry for Monday</button>
+    <button onclick="addEntry('Tuesday')">Add Entry for Tuesday</button>
+    <button onclick="addEntry('Wednesday')">Add Entry for Wednesday</button>
+    <button onclick="addEntry('Thursday')">Add Entry for Thursday</button>
+    <button onclick="addEntry('Friday')">Add Entry for Friday</button>
+
+    <button onclick="saveData()" style="margin-top: 20px;">Save Progress</button>
+
+    <script>
+        function addEntry(day) {
+            const tableBody = document.getElementById('recruitmentTable');
+
+            // Create a new row
+            const row = document.createElement('tr');
+
+            // Create cells for each input
+            row.innerHTML = `
+                <td>${day}</td>
+                <td><input type="text" placeholder="Enter Job ID"></td>
+                <td><input type="text" placeholder="Enter Candidates Submitted"></td>
+                <td><input type="text" placeholder="Enter Candidates Rejected"></td>
+                <td><input type="text" placeholder="Enter Rejection Reasons"></td>
+                <td><input type="text" placeholder="Enter New Role"></td>
+                <td><input type="text" placeholder="Yes/No"></td>
+                <td><button onclick="removeEntry(this)">Remove</button></td>
+            `;
+
+            // Append the new row to the table body
+            tableBody.appendChild(row);
+        }
+
+        function removeEntry(button) {
+            // Remove the row
+            button.parentElement.parentElement.remove();
+        }
+
+        function saveData() {
+            // Collect all the data from the table
+            const rows = document.querySelectorAll('#recruitmentTable tr');
+            const data = [];
+
+            rows.forEach(row => {
+                const day = row.cells[0].textContent;
+                const jobId = row.cells[1].querySelector('input').value;
+                const candidatesSubmitted = row.cells[2].querySelector('input').value;
+                const candidatesRejected = row.cells[3].querySelector('input').value;
+                const rejectionReason = row.cells[4].querySelector('input').value;
+                const newRole = row.cells[5].querySelector('input').value;
+                const workedOnNewRole = row.cells[6].querySelector('input').value;
+
+                data.push({
+                    day,
+                    jobId,
+                    candidatesSubmitted,
+                    candidatesRejected,
+                    rejectionReason,
+                    newRole,
+                    workedOnNewRole
+                });
+            });
+
+            console.log('Saved Data:', data);
+            alert('Progress saved!');
+        }
+    </script>
+</body>
+</html>
